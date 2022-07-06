@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\EgresoController;
+use App\Http\Controllers\IngresoController;
+use App\Http\Controllers\ItemController;
+use App\Models\Ingreso;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,19 +18,23 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/', function () {
-    return view('items.index');
-});
+Route::get('/', [ItemController::class, 'index']);
 
-Route::prefix('stock')->group(function () {
+Route::prefix('item')->group(function () {
 
-    Route::get('/salidas', function () {
-        return view('tables.salidas');
-    });
+    Route::post('/store', [ItemController::class, 'store']);
 
     Route::get('/entradas', function () {
         return view('tables.entradas');
     });
+});
+
+Route::prefix('stock')->group(function () {
+
+    Route::get('/salidas', [EgresoController::class, 'index']);
+    Route::post('/store', [IngresoController::class, 'store']);
+    Route::get('/entradas', [IngresoController::class, 'index']);
+    Route::post('/delete', [EgresoController::class, 'store']);
 });
 
 
