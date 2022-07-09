@@ -4,6 +4,8 @@
     <script>
         var items = [];
         var itemsDelete = []
+        var index = 0;
+        var indexDelete = 0;
 
         $(function() {
             $("#addStockForm").on("submit", function(e) { //id of form
@@ -59,8 +61,6 @@
                     items: JSON.stringify(itemsDelete)
                 }
 
-                console.log(data);
-
                 $.ajax({
                     url: action,
                     data: {
@@ -98,11 +98,11 @@
         });
 
         function addItem() {
-            var item = document.getElementById('selectItem').value;
+            var item = document.getElementById('selectItem').value == 0 ? null : document.getElementById('selectItem')
+                .value;
             var quantity = document.getElementById('quantity').value;
 
-            if (item != '' && quantity > 0) {
-                console.log(item);
+            if (item && quantity > 0) {
                 var itemToSave = {
                     item: JSON.parse(item),
                     quantity: quantity
@@ -111,27 +111,41 @@
                 items.push(itemToSave);
 
                 var fila = document.getElementById('dataTable').insertRow(0);
+                fila.id = `fila${index}`;
                 var descripcion = fila.insertCell(0);
                 var ubicacion = fila.insertCell(1);
                 var cantidad = fila.insertCell(2);
+                var accion = fila.insertCell(3);
                 descripcion.innerHTML = itemToSave['item']['descripcion'];
                 ubicacion.innerHTML = itemToSave['item']['nombre_ubicacion'];
                 cantidad.innerHTML = quantity;
-
+                accion.innerHTML =
+                    `<button type="button" id="${index}-${itemToSave.item.item_id}" class="fa-solid fa-trash px-2" onclick="removeItem(this.id)" /> `;
                 $('#selectItem').prop('selectedIndex', 0);
                 document.getElementById('quantity').value = 0;
+                index++
+
             } else {
                 alert('Debe seleccionar un item e ingresar una cantidad');
             }
 
         }
 
+        function removeItem(index) {
+            var index_fila = index.split('-')[0];
+            var fila = $(`#fila${index_fila}`).index();
+            document.getElementById('dataTable').deleteRow(fila);
+            var index_item = index.split('-')[1]
+            items = items.filter(item => item.item.item_id != index_item);
+        }
+
         function addItemDelete() {
-            var item = document.getElementById('selectItemDelete').value;
+            var item = document.getElementById('selectItemDelete').value == 0 ? null : document.getElementById(
+                    'selectItemDelete')
+                .value;
             var quantity = document.getElementById('quantityDelete').value;
 
-            if (item != '' && quantity > 0) {
-                console.log(item);
+            if (item && quantity > 0) {
                 var itemToSave = {
                     item: JSON.parse(item),
                     quantity: quantity
@@ -140,12 +154,16 @@
                 itemsDelete.push(itemToSave);
 
                 var fila = document.getElementById('dataTableDelete').insertRow(0);
+                fila.id = `filaDelete${indexDelete}`;
                 var descripcion = fila.insertCell(0);
                 var ubicacion = fila.insertCell(1);
                 var cantidad = fila.insertCell(2);
+                var accion = fila.insertCell(3);
                 descripcion.innerHTML = itemToSave['item']['descripcion'];
                 ubicacion.innerHTML = itemToSave['item']['nombre_ubicacion'];
                 cantidad.innerHTML = quantity;
+                accion.innerHTML =
+                    `<button type="button" id="${indexDelete}-${itemToSave.item.item_id}" class="fa-solid fa-trash px-2" onclick="removeDeleteItem(this.id)" /> `;
 
                 $('#selectItemDelete').prop('selectedIndex', 0);
                 document.getElementById('quantityDelete').value = 0;
@@ -155,8 +173,12 @@
 
         }
 
-        function addStock() {
-
+        function removeDeleteItem(index) {
+            var index_fila = index.split('-')[0];
+            var fila = $(`#filaDelete${index_fila}`).index();
+            document.getElementById('dataTableDelete').deleteRow(fila);
+            var index_item = index.split('-')[1]
+            itemsDelete = items.filter(item => item.item.item_id != index_item);
         }
     </script>
     <main class="col-md-10 ms-sm-auto col-lg-12 px-md-4">
@@ -173,7 +195,7 @@
                     data-target="#modal3">Entregar stock </span></button>
             </div>
         </div>
-        <div
+        {{-- <div
             class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom col-12">
             <div class="form-group col-4 p-2">
                 <div class="form-group">
@@ -192,7 +214,7 @@
                 </div>
             </div>
             <i class="fa-solid fa-magnifying-glass"></i>
-        </div>
+        </div> --}}
 
         <!-- Modal 1 -->
         <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="modal1Title"
@@ -390,7 +412,7 @@
                             <h6 class="modal-title mt-2" id="modal2Title">Stock</h6>
 
                             <div class="d-flex flex-row  justify-content-between flex-wrap flex-md-nowrap ">
-                                <table class="table table-striped">
+                                <table class="table table-striped" id="table">
                                     <thead>
                                         <tr>
                                             <th scope="col">Producto</th>
@@ -507,9 +529,9 @@
                             <h6 class="modal-title mt-2" id="modal2Title">Stock</h6>
 
                             <div class="d-flex flex-row  justify-content-between flex-wrap flex-md-nowrap ">
-                                <table class="table table-striped">
+                                <table class="table table-striped" id="tableDelete">
                                     <thead>
-                                        <tr>
+                                        <tr id="head">
                                             <th scope="col">Producto</th>
                                             <th scope="col">Ubicacion</th>
                                             <th scope="col">Cantidad</th>

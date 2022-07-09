@@ -193,6 +193,20 @@
                                 <li><a href="/" class=" rounded">Inicio</a></li>
                                 <li><a href="/stock/entradas" class=" rounded">Entradas</a></li>
                                 <li><a href="/stock/salidas" class=" rounded">Salidas</a></li>
+                                <li class="m-2 list-unstyled d-flex flex-column">
+                                    <a class="btn btn-toggle align-items-center rounded collapsed text-start"
+                                        data-bs-toggle="collapse" data-bs-target="#config-collapse"
+                                        aria-expanded="true">
+                                        Configuracion
+                                    </a>
+                                    <div class="collapse" id="config-collapse">
+                                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                            <li><a href="/ubicacion" class=" rounded">Ubicaciones</a></li>
+                                            <li><a href="/responsable" class=" rounded">Responsable</a></li>
+                                        </ul>
+                                    </div>
+
+                                </li>
                             </ul>
                         </div>
                         <a class="btn btn-toggle align-items-center rounded collapsed text-start">

@@ -3,7 +3,10 @@
 use App\Http\Controllers\EgresoController;
 use App\Http\Controllers\IngresoController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ResponsableController;
+use App\Http\Controllers\UbicacionController;
 use App\Models\Ingreso;
+use App\Models\Ubicacion;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,6 +39,20 @@ Route::prefix('stock')->group(function () {
     Route::get('/entradas', [IngresoController::class, 'index']);
     Route::post('/delete', [EgresoController::class, 'store']);
 });
+
+Route::prefix('ubicacion')->group(function () {
+
+    Route::get('/', [UbicacionController::class, 'index']);
+    Route::post('/store', [UbicacionController::class, 'store']);
+});
+
+Route::prefix('responsable')->group(function () {
+
+    Route::get('/', [ResponsableController::class, 'index']);
+    Route::post('/store', [ResponsableController::class, 'store']);
+});
+
+
 
 
 
