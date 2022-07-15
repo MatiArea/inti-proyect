@@ -10,7 +10,7 @@
                 <thead>
                     <tr>
 
-                        <th scope="col">Codigo identificatorio</th>
+                        <th class="text-center" scope="col">Codigo identificatorio</th>
                         <th scope="col">Fecha</th>
                         <th scope="col">Responsable</th>
                     </tr>
@@ -18,9 +18,16 @@
                 <tbody>
                     @foreach ($egresos as $salida)
                         <tr>
-                            <td>{{ $salida->id }}</td>
+                            <td class="text-center">{{ $salida->id }}</td>
                             <td>{{ $salida->fecha }}</td>
-                            <td>{{ $salida->responsable }}</td>
+                            <td>{{ $salida->nombreApellido }}</td>
+                            <td class="text-center">
+                                <a href="/stock/salidas/{{ $salida->id }}" class=" rounded"><i
+                                        class="fa-solid fa-eye px-2"></i></a>
+
+                                {{-- <i class="fa-solid fa-pencil px-2"></i> --}}
+                                {{-- <i class="fa-solid fa-trash px-2"></i> --}}
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

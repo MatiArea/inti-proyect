@@ -7,6 +7,8 @@ use App\Models\Egreso;
 use App\Models\Item;
 use App\Models\ItemEgreso;
 
+use PDF;
+
 class EgresoController extends Controller
 {
     /**
@@ -18,6 +20,7 @@ class EgresoController extends Controller
     {
         //
         $egresos = Egreso::select('*')
+            ->join('responsable', 'egreso.responsable_id', '=', 'responsable.responsable_id')
             ->get();
 
         return view('tables.salidas', compact('egresos'));
@@ -78,6 +81,48 @@ class EgresoController extends Controller
     public function show($id)
     {
         //
+        $egreso = Egreso::select('*')
+            ->join('responsable', 'egreso.responsable_id', '=', 'responsable.responsable_id')
+            ->join('ubicacion', 'egreso.ubicacion_id', '=', 'responsable.ubicacion_id')
+            ->where('id', $id)
+            ->first();
+
+        $items = ItemEgreso::select('*')
+            ->join('item', 'item_egreso.item_id', '=', 'item.item_id')
+            ->where('egreso_id', $id)
+            ->get();
+
+        return view('salidas.index', compact('egreso', 'items'));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function download(Request $request)
+    {
+
+        $id = $request->id;
+
+        $egreso = Egreso::select('*')
+            ->join('responsable', 'egreso.responsable_id', '=', 'responsable.responsable_id')
+            ->join('ubicacion', 'egreso.ubicacion_id', '=', 'responsable.ubicacion_id')
+            ->where('id', $id)
+            ->first();
+
+        $items = ItemEgreso::select('*')
+            ->join('item', 'item_egreso.item_id', '=', 'item.item_id')
+            ->where('egreso_id', $id)
+            ->get();
+
+        $pdf = PDF::loadView('template.pdf', compact('egreso', 'items'));
+        $pdf_name = 'egreso_' . $id . '_fecha_' . $egreso->fecha . '.pdf';
+
+        return $pdf->download($pdf_name);
+
+        // return view('salidas.index', compact('egreso', 'items'));
     }
 
     /**

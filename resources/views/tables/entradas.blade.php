@@ -10,7 +10,7 @@
                 <thead>
                     <tr>
 
-                        <th scope="col">Codigo identificatorio</th>
+                        <th class="text-center" scope="col">Codigo identificatorio</th>
                         <th scope="col">Fecha</th>
                         <th scope="col">Ubicacion</th>
                     </tr>
@@ -18,9 +18,14 @@
                 <tbody>
                     @foreach ($ingresos as $entrada)
                         <tr>
-                            <td>{{ $entrada->id }}</td>
+                            <td class="text-center">{{ $entrada->id }}</td>
                             <td>{{ $entrada->fecha }}</td>
                             <td>{{ $entrada->nombre_ubicacion }}</td>
+                            <td class="text-center">
+                                <i class="fa-solid fa-eye px-2"></i>
+                                {{-- <i class="fa-solid fa-pencil px-2"></i> --}}
+                                {{-- <i class="fa-solid fa-trash px-2"></i> --}}
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

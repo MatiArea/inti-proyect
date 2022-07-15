@@ -5,8 +5,6 @@ use App\Http\Controllers\IngresoController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ResponsableController;
 use App\Http\Controllers\UbicacionController;
-use App\Models\Ingreso;
-use App\Models\Ubicacion;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,9 +33,13 @@ Route::prefix('item')->group(function () {
 Route::prefix('stock')->group(function () {
 
     Route::get('/salidas', [EgresoController::class, 'index']);
+    Route::get('/salidas/{id}', [EgresoController::class, 'show']);
+    Route::post('/salidas/descarga', [EgresoController::class, 'download']);
+    Route::post('/delete', [EgresoController::class, 'store']);
+
     Route::post('/store', [IngresoController::class, 'store']);
     Route::get('/entradas', [IngresoController::class, 'index']);
-    Route::post('/delete', [EgresoController::class, 'store']);
+    Route::get('/entradas/{id}', [IngresoController::class, 'show']);
 });
 
 Route::prefix('ubicacion')->group(function () {
