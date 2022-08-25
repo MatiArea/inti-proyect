@@ -1,11 +1,12 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\EgresoController;
 use App\Http\Controllers\IngresoController;
-use App\Http\Controllers\ItemController;
-use App\Http\Controllers\ResponsableController;
 use App\Http\Controllers\UbicacionController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ResponsableController;
+use App\Http\Controllers\TipoProductoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,7 @@ Route::get('/', [ItemController::class, 'index']);
 Route::prefix('item')->group(function () {
 
     Route::post('/store', [ItemController::class, 'store']);
+    Route::delete('/delete/{id}', [ItemController::class, 'destroy']);
 
     Route::get('/entradas', function () {
         return view('tables.entradas');
@@ -40,6 +42,7 @@ Route::prefix('stock')->group(function () {
     Route::post('/store', [IngresoController::class, 'store']);
     Route::get('/entradas', [IngresoController::class, 'index']);
     Route::get('/entradas/{id}', [IngresoController::class, 'show']);
+    Route::post('/entradas/descarga', [IngresoController::class, 'download']);
 });
 
 Route::prefix('ubicacion')->group(function () {
@@ -52,6 +55,11 @@ Route::prefix('responsable')->group(function () {
 
     Route::get('/', [ResponsableController::class, 'index']);
     Route::post('/store', [ResponsableController::class, 'store']);
+});
+
+Route::prefix('tipos_productos')->group(function () {
+    Route::get('/', [TipoProductoController::class, 'index']);
+    Route::post('/store', [TipoProductoController::class, 'store']);
 });
 
 

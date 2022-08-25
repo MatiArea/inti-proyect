@@ -117,7 +117,7 @@ class EgresoController extends Controller
             ->where('egreso_id', $id)
             ->get();
 
-        $pdf = PDF::loadView('template.pdf', compact('egreso', 'items'));
+        $pdf = PDF::loadView('template.pdf_egresos', compact('egreso', 'items'));
         $pdf_name = 'egreso_' . $id . '_fecha_' . $egreso->fecha . '.pdf';
 
         return $pdf->download($pdf_name);

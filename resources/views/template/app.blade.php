@@ -203,6 +203,7 @@
                                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                                             <li><a href="/ubicacion" class=" rounded">Ubicaciones</a></li>
                                             <li><a href="/responsable" class=" rounded">Responsable</a></li>
+                                            <li><a href="/tipos_productos" class=" rounded">Tipos de producto</a></li>
                                         </ul>
                                     </div>
 

@@ -2,25 +2,25 @@
 
 @section('content')
     <div class="modal-header">
-        <h5 class="modal-title" id="modalData">Entrega detalle</h5>
+        <h5 class="modal-title" id="modalData">Ingreso detalle</h5>
     </div>
 
     <div class="modal-body">
 
-        <form method="POST" action="/stock/salidas/descarga">
+        <form method="POST" action="/stock/entradas/descarga">
             @csrf
             <!-- Section 1 -->
             <h6 class="modal-title" id="modalData">Informacion </h6>
 
             <div class="d-flex flex-row justify-content-between flex-wrap flex-md-nowrap p-4">
 
-                <input type="number" name="id" id="id" value="{{ $egreso->id }}" hidden>
+                <input type="number" id="ncentrocosto" name="id" id="id" value="{{ $ingreso->id }}" hidden>
                 <div class="form-group col-3 p-1">
                     <span class="p-2">
                         Numero identificatorio
                     </span>
                     <span class="form-control mt-1">
-                        {{ $egreso->id }}
+                        {{ $ingreso->id }}
                     </span>
                 </div>
 
@@ -29,7 +29,7 @@
                         Fecha
                     </span>
                     <span class="form-control mt-1">
-                        {{ $egreso->fecha }}
+                        {{ $ingreso->fecha }}
                     </span>
                 </div>
 
@@ -40,7 +40,7 @@
                         Ubicacion
                     </span>
                     <span class="form-control mt-1">
-                        {{ $egreso->nombre_ubicacion }}
+                        {{ $ingreso->nombre_ubicacion }}
                     </span>
                 </div>
 
@@ -49,7 +49,7 @@
                         Responsable
                     </span>
                     <span class="form-control mt-1">
-                        {{ $egreso->nombreApellido }}
+                        {{ $ingreso->nombreApellido }}
                     </span>
                 </div>
 
@@ -87,7 +87,7 @@
             <!-- Fin Section 6 -->
 
             <div class="modal-footer mt-5">
-                <a href="/stock/salidas" class="rounded">
+                <a href="/stock/entradas" class="rounded">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">
                         Volver
                     </button>

@@ -27,5 +27,5 @@ class Item extends Model
     /**
      * @var array
      */
-    protected $fillable = ['codigo', 'descripcion', 'stock', 'ubicacion_id', 'tipo_producto_id', 'responsable_id', 'stock_minimo', 'inventariable'];
+    protected $fillable = ['codigo', 'descripcion', 'stock', 'ubicacion_id', 'tipo_producto_id', 'responsable_id', 'stock_minimo', 'inventariable', 'baja'];
 }

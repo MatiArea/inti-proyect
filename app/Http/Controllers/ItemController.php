@@ -25,6 +25,7 @@ class ItemController extends Controller
         $items = Item::select('*')
             ->leftjoin('tipo_producto', 'item.tipo_producto_id', '=', 'tipo_producto.id')
             ->leftjoin('ubicacion', 'item.ubicacion_id', '=', 'ubicacion.ubicacion_id')
+            ->where('item.baja', '=', 0)
             ->get();
 
 
@@ -44,7 +45,7 @@ class ItemController extends Controller
         $item->codigo = $request->codigo;
         $item->descripcion = $request->descripcion;
         $item->tipo_producto_id = $request->tipo_producto;
-        $item->ubicacion_id = $request->ubicacion;
+        $item->ubicacion_id = $request->ubicacion_id;
         $item->responsable_id = $request->responsable;
         $item->stock = $request->stockInicial;
         $item->stock_minimo = $request->stockMinimo;
@@ -86,5 +87,14 @@ class ItemController extends Controller
     public function destroy($id)
     {
         //
+        $item = Item::where('item_id', '=', $id)->first();
+        $item->update(['baja' => 1]);
+        $item->save();
+
+        if ($item) {
+            return response()->json(['success' => true, 'message' => $item]);
+        } else {
+            return response()->json(['success' => false]);
+        }
     }
 }

@@ -51,7 +51,6 @@
                 var action = $(this).attr("action"); //get submit action from form
                 var method = $(this).attr("method"); // get submit method
 
-                console.log($('#ubicacionDelete').val())
                 var data = {
                     _token: $('input[name=_token]').val(),
                     fecha: $('#fechaDelete').val(),
@@ -67,7 +66,8 @@
                         _token: $('input[name=_token]').val(),
                         fecha: $('#fechaDelete').val(),
                         ubicacion_id: parseInt($('#ubicacionDelete').val()),
-                        responsable_id: $('#responsable').val() ? parseInt($('#responsableDelete')
+                        responsable_id: $('#responsableDelete').val() ? parseInt($(
+                                '#responsableDelete')
                             .val()) : null,
                         items: JSON.stringify(itemsDelete)
                     },
@@ -77,11 +77,10 @@
                             "meta[name='csrf-token']").attr('content'));
                     },
                     success: function(response) {
-                        console.log(response);
                         if (response.success) {
                             itemsDelete = [];
                             $('#deleteStockForm')[0].reset();
-                            // window.location.href = "/";
+                            window.location.href = "/";
                         } else {
                             alert(response.message);
                         }
@@ -98,7 +97,8 @@
         });
 
         function addItem() {
-            var item = document.getElementById('selectItem').value == 0 ? null : document.getElementById('selectItem')
+            var item = document.getElementById('selectItem').value == 0 ? null : document.getElementById(
+                    'selectItem')
                 .value;
             var quantity = document.getElementById('quantity').value;
 
@@ -180,6 +180,32 @@
             var index_item = index.split('-')[1]
             itemsDelete = items.filter(item => item.item.item_id != index_item);
         }
+
+        function deleteItem(id) {
+            //ajax call to delete item with delete http method
+            $.ajax({
+                url: '/item/delete/' + id,
+                type: 'DELETE',
+                beforeSend: function(request) {
+                    return request.setRequestHeader('X-CSRF-Token', $("meta[name='csrf-token']").attr(
+                        'content'));
+                },
+                success: function(response) {
+                    if (response.success) {
+                        window.location.href = "/";
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(result) {
+
+                    console.log(result)
+
+                },
+
+            })
+
+        }
     </script>
     <main class="col-md-10 ms-sm-auto col-lg-12 px-md-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -257,11 +283,12 @@
                             </div>
                             <div class="d-flex flex-row  justify-content-between flex-wrap flex-md-nowrap pt-2">
                                 <div class="form-group col-6 p-2">
-                                    <div class="form-group">
-                                        <select class="form-control" name="ubicacion" placeholcer="Ubicacion">
+                                    <div class="form-group col-12">
+                                        <select class="form-control" name="ubicacion_id" placeholcer="Ubicacion">
                                             <option value="0" disabled selected>Ubicacion</option>
                                             @foreach ($ubicaciones as $ubicacion)
-                                                <option value="{{ $ubicacion->id }}">{{ $ubicacion->nombre_ubicacion }}
+                                                <option value="{{ $ubicacion->ubicacion_id }}">
+                                                    {{ $ubicacion->nombre_ubicacion }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -462,8 +489,7 @@
                             <h6 class="modal-title" id="modal2Title">Informacion centro de costo</h6>
 
                             <div class="form-group col-6 p-2">
-                                <input type="datetime-local" class="form-control" name="fechaDelete" id="fechaDelete"
-                                    placeholder="Cantidad">
+                                <input type="datetime-local" class="form-control" name="fechaDelete" id="fechaDelete">
                             </div>
                             <div class="d-flex flex-row  justify-content-between flex-wrap flex-md-nowrap pt-2">
 
@@ -589,9 +615,13 @@
                                 <td>No</td>
                             @endif
                             <td>
-                                <i class="fa-solid fa-eye px-2"></i>
+                                {{-- <i class="fa-solid fa-eye px-2"></i> --}}
                                 {{-- <i class="fa-solid fa-pencil px-2"></i> --}}
-                                <i class="fa-solid fa-trash px-2"></i>
+                                {{-- <i class="fa-solid fa-trash px-2">
+
+                                </i> --}}
+                                <a class=" rounded" onclick="deleteItem({{ $item->item_id }})"><i
+                                        class="fa-solid fa-trash px-2"></i></a>
                             </td>
                         </tr>
                     @endforeach

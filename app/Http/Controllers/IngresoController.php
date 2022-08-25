@@ -7,6 +7,8 @@ use App\Models\Ingreso;
 use App\Models\ItemIngreso;
 use App\Models\Item;
 
+use PDF;
+
 class IngresoController extends Controller
 {
     /**
@@ -81,6 +83,48 @@ class IngresoController extends Controller
     public function show($id)
     {
         //
+        $ingreso = Ingreso::select('*')
+            ->join('responsable', 'ingreso.responsable_id', '=', 'responsable.responsable_id')
+            ->join('ubicacion', 'ingreso.ubicacion_id', '=', 'responsable.ubicacion_id')
+            ->where('id', $id)
+            ->first();
+
+        $items = ItemIngreso::select('*')
+            ->join('item', 'item_ingreso.item_id', '=', 'item.item_id')
+            ->where('ingreso_id', $id)
+            ->get();
+
+        return view('ingresos.index', compact('ingreso', 'items'));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function download(Request $request)
+    {
+
+        $id = $request->id;
+
+        $ingreso = Ingreso::select('*')
+            ->join('responsable', 'ingreso.responsable_id', '=', 'responsable.responsable_id')
+            ->join('ubicacion', 'ingreso.ubicacion_id', '=', 'responsable.ubicacion_id')
+            ->where('id', $id)
+            ->first();
+
+        $items = ItemIngreso::select('*')
+            ->join('item', 'item_ingreso.item_id', '=', 'item.item_id')
+            ->where('ingreso_id', $id)
+            ->get();
+
+        $pdf = PDF::loadView('template.pdf_ingresos', compact('ingreso', 'items'));
+        $pdf_name = 'ingreso_' . $id . '_fecha_' . $ingreso->fecha . '.pdf';
+
+        return $pdf->download($pdf_name);
+
+        // return view('salidas.index', compact('egreso', 'items'));
     }
 
     /**
