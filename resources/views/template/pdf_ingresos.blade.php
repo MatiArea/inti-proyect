@@ -75,7 +75,7 @@
 
     <div class="radiocir">
         <div>
-            <img src="/assets/brand/inti_logo_byn.png" style="width:175px;height:100px;margin-left: 250px">
+            <img src="{{ asset('storage/app/' . $logo->path) }}" style="width:175px;height:100px;margin-left: 250px">
         </div>
         <div style="margin-top: 15px">
 

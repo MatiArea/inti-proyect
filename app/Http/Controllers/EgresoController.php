@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Egreso;
-use App\Models\Item;
-use App\Models\ItemEgreso;
-
 use PDF;
+use Image;
+use App\Models\Item;
+use App\Models\Egreso;
+use App\Models\ItemEgreso;
+use Illuminate\Http\Request;
+use App\Models\Image as Logo;
 
 class EgresoController extends Controller
 {
@@ -20,7 +21,12 @@ class EgresoController extends Controller
     {
         //
         $egresos = Egreso::select('*')
-            ->join('responsable', 'egreso.responsable_id', '=', 'responsable.responsable_id')
+            ->join(
+                'responsable',
+                'egreso.responsable_id',
+                '=',
+                'responsable.responsable_id'
+            )
             ->get();
 
         return view('tables.salidas', compact('egresos'));
@@ -36,10 +42,12 @@ class EgresoController extends Controller
     {
         //
         try {
-            $egreso = new egreso;
+            $egreso = new egreso();
             $egreso->fecha = $request->fecha;
-            $egreso->ubicacion_id = (int)$request->ubicacion_id;
+            $egreso->nombre_receptor = $request->nombre_receptor;
+            $egreso->ubicacion_id = (int) $request->ubicacion_id;
             $egreso->responsable_id = $request->responsable_id;
+            $egreso->area_receptor_id = $request->area_receptor_id;
             $new_egreso = $egreso->save();
 
             if ($new_egreso) {
@@ -48,10 +56,10 @@ class EgresoController extends Controller
                     $item_data = $item->item;
                     // $value = $item['item'];
 
-                    $item_egreso = new ItemEgreso;
+                    $item_egreso = new ItemEgreso();
                     $item_egreso->egreso_id = $egreso->id;
-                    $item_egreso->item_id = (int)$item_data->item_id;
-                    $item_egreso->cantidad = (int)$item->quantity;
+                    $item_egreso->item_id = (int) $item_data->item_id;
+                    $item_egreso->cantidad = (int) $item->quantity;
                     $new_item_egreso = $item_egreso->save();
 
                     if ($new_item_egreso) {
@@ -60,11 +68,16 @@ class EgresoController extends Controller
                         $item_to_update->update(['stock' => $stock]);
                     }
                 }
-                return response()->json(['success' => true, 'message' => 'Error al registrar egreso.']);
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Error al registrar egreso.',
+                ]);
             } else {
-                return response()->json(['success' => false, 'message' => 'Error al registrar egreso.']);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error al registrar egreso.',
+                ]);
             }
-
 
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
@@ -82,8 +95,18 @@ class EgresoController extends Controller
     {
         //
         $egreso = Egreso::select('*')
-            ->join('responsable', 'egreso.responsable_id', '=', 'responsable.responsable_id')
-            ->join('ubicacion', 'egreso.ubicacion_id', '=', 'responsable.ubicacion_id')
+            ->join(
+                'responsable',
+                'egreso.responsable_id',
+                '=',
+                'responsable.responsable_id'
+            )
+            ->join(
+                'ubicacion',
+                'egreso.ubicacion_id',
+                '=',
+                'responsable.ubicacion_id'
+            )
             ->where('id', $id)
             ->first();
 
@@ -103,12 +126,21 @@ class EgresoController extends Controller
      */
     public function download(Request $request)
     {
-
         $id = $request->id;
 
         $egreso = Egreso::select('*')
-            ->join('responsable', 'egreso.responsable_id', '=', 'responsable.responsable_id')
-            ->join('ubicacion', 'egreso.ubicacion_id', '=', 'responsable.ubicacion_id')
+            ->join(
+                'responsable',
+                'egreso.responsable_id',
+                '=',
+                'responsable.responsable_id'
+            )
+            ->join(
+                'ubicacion',
+                'egreso.ubicacion_id',
+                '=',
+                'responsable.ubicacion_id'
+            )
             ->where('id', $id)
             ->first();
 
@@ -117,7 +149,12 @@ class EgresoController extends Controller
             ->where('egreso_id', $id)
             ->get();
 
-        $pdf = PDF::loadView('template.pdf_egresos', compact('egreso', 'items'));
+        $logo = Logo::where('images_baja', 0)->first();
+
+        $pdf = PDF::loadView(
+            'template.pdf_egresos',
+            compact('egreso', 'items', 'logo')
+        );
         $pdf_name = 'egreso_' . $id . '_fecha_' . $egreso->fecha . '.pdf';
 
         return $pdf->download($pdf_name);

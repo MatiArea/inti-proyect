@@ -27,5 +27,30 @@ class Item extends Model
     /**
      * @var array
      */
-    protected $fillable = ['codigo', 'descripcion', 'stock', 'ubicacion_id', 'tipo_producto_id', 'responsable_id', 'stock_minimo', 'inventariable', 'baja'];
+    protected $fillable = [
+        'codigo',
+        'descripcion',
+        'stock',
+        'ubicacion_id',
+        'tipo_producto_id',
+        'responsable_id',
+        'stock_minimo',
+        'inventariable',
+        'baja',
+    ];
+
+    public function tipoProducto()
+    {
+        return $this->belongsTo('App\Models\TipoProducto', 'tipo_producto_id');
+    }
+
+    public function ubicacion()
+    {
+        return $this->belongsTo('App\Models\Ubicacion', 'ubicacion_id');
+    }
+
+    public function responsable()
+    {
+        return $this->belongsTo('App\Models\Responsable', 'responsable_id');
+    }
 }

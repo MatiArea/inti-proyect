@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Exports\ItemsExport;
+use App\Models\Area;
 use App\Models\Item;
+use App\Models\Ubicacion;
 use App\Models\Responsable;
 use App\Models\TipoProducto;
-use App\Models\Ubicacion;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+
+use function PHPUnit\Framework\returnSelf;
 
 class ItemController extends Controller
 {
@@ -21,15 +27,31 @@ class ItemController extends Controller
         $tipos_productos = TipoProducto::all();
         $ubicaciones = Ubicacion::all();
         $responsables = Responsable::all();
+        $areas = Area::all();
 
         $items = Item::select('*')
-            ->leftjoin('tipo_producto', 'item.tipo_producto_id', '=', 'tipo_producto.id')
-            ->leftjoin('ubicacion', 'item.ubicacion_id', '=', 'ubicacion.ubicacion_id')
+            ->leftjoin(
+                'tipo_producto',
+                'item.tipo_producto_id',
+                '=',
+                'tipo_producto.id'
+            )
+            ->leftjoin(
+                'ubicacion',
+                'item.ubicacion_id',
+                '=',
+                'ubicacion.ubicacion_id'
+            )
             ->where('item.baja', '=', 0)
             ->get();
 
-
-        return view('items.index', ['items' => $items, 'tipos_productos' => $tipos_productos, 'ubicaciones' => $ubicaciones, 'responsables' => $responsables]);
+        return view('items.index', [
+            'items' => $items,
+            'tipos_productos' => $tipos_productos,
+            'ubicaciones' => $ubicaciones,
+            'responsables' => $responsables,
+            'areas' => $areas,
+        ]);
     }
 
     /**
@@ -41,7 +63,7 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         //
-        $item = new Item;
+        $item = new Item();
         $item->codigo = $request->codigo;
         $item->descripcion = $request->descripcion;
         $item->tipo_producto_id = $request->tipo_producto;
@@ -96,5 +118,13 @@ class ItemController extends Controller
         } else {
             return response()->json(['success' => false]);
         }
+    }
+
+    public function export()
+    {
+        return Excel::download(
+            new ItemsExport(),
+            'items-' . Carbon::today()->toDateString() . '.xlsx'
+        );
     }
 }

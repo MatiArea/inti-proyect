@@ -19,9 +19,14 @@ class Egreso extends Model
     protected $table = 'egreso';
     public $timestamps = false;
 
-
     /**
      * @var array
      */
-    protected $fillable = ['fecha', 'responsable_id', 'ubicacion_id'];
+    protected $fillable = [
+        'fecha',
+        'nombre_receptor',
+        'responsable_id',
+        'ubicacion_id',
+        'area_receptor_id',
+    ];
 }

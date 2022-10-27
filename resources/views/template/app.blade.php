@@ -183,7 +183,27 @@
             </div>
             <div class="mt-2">
                 <ul class="components">
-                    <li class="m-2 list-unstyled d-flex flex-column">
+                    <li>
+                        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle">Stock</a>
+                        <ul class="collapse list-unstyled" id="homeSubmenu">
+                            <li><a href="/" class=" rounded">Inicio</a></li>
+                            <li><a href="/stock/entradas" class=" rounded">Entradas</a></li>
+                            <li><a href="/stock/salidas" class=" rounded">Salidas</a></li>
+                            <li class="m-2">
+                                <a href="#configSubmenu" data-toggle="collapse" aria-expanded="false"
+                                    class="dropdown-toggle">Configuración</a>
+                                <ul class="collapse list-unstyled" id="configSubmenu">
+                                    <li><a href="/ubicacion" class=" rounded">Ubicaciones</a></li>
+                                    <li><a href="/responsable" class=" rounded">Responsable</a></li>
+                                    <li><a href="/tipos_productos" class=" rounded">Tipos de producto</a></li>
+                                    <li><a href="/icono" class="rounded">Logo institucional</a></li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </li>
+                    {{-- <li class="m-2 list-unstyled d-flex flex-column">
                         <a class="btn btn-toggle align-items-center rounded collapsed text-start"
                             data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
                             Stock
@@ -194,7 +214,7 @@
                                 <li><a href="/stock/entradas" class=" rounded">Entradas</a></li>
                                 <li><a href="/stock/salidas" class=" rounded">Salidas</a></li>
                                 <li class="m-2 list-unstyled d-flex flex-column">
-                                    <a class="btn btn-toggle align-items-center rounded collapsed text-start"
+                                    <a class="btn-toggle align-items-center rounded collapsed text-start"
                                         data-bs-toggle="collapse" data-bs-target="#config-collapse"
                                         aria-expanded="true">
                                         Configuracion
@@ -210,10 +230,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <a class="btn btn-toggle align-items-center rounded collapsed text-start">
-                            Inventario
-                        </a>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
 

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Ingreso;
 use App\Models\ItemIngreso;
 use App\Models\Item;
-
+use App\Models\Image as Logo;
 use PDF;
 
 class IngresoController extends Controller
@@ -20,8 +20,18 @@ class IngresoController extends Controller
     {
         //
         $ingresos = Ingreso::select('*')
-            ->leftjoin('ubicacion', 'ingreso.ubicacion_id', '=', 'ubicacion.ubicacion_id')
-            ->leftjoin('responsable', 'ingreso.responsable_id', '=', 'responsable.responsable_id')
+            ->leftjoin(
+                'ubicacion',
+                'ingreso.ubicacion_id',
+                '=',
+                'ubicacion.ubicacion_id'
+            )
+            ->leftjoin(
+                'responsable',
+                'ingreso.responsable_id',
+                '=',
+                'responsable.responsable_id'
+            )
             ->get();
 
         return view('tables.entradas', compact('ingresos'));
@@ -37,10 +47,9 @@ class IngresoController extends Controller
     {
         //
         try {
-
-            $ingreso = new Ingreso;
+            $ingreso = new Ingreso();
             $ingreso->fecha = $request->fecha;
-            $ingreso->ubicacion_id = (int)$request->ubicacion_id;
+            $ingreso->ubicacion_id = (int) $request->ubicacion_id;
             $ingreso->responsable_id = $request->responsable_id;
             $new_ingreso = $ingreso->save();
 
@@ -50,10 +59,10 @@ class IngresoController extends Controller
                     $item_data = $item->item;
                     // $value = $item['item'];
 
-                    $item_ingreso = new ItemIngreso;
+                    $item_ingreso = new ItemIngreso();
                     $item_ingreso->ingreso_id = $ingreso->id;
-                    $item_ingreso->item_id = (int)$item_data->item_id;
-                    $item_ingreso->cantidad = (int)$item->quantity;
+                    $item_ingreso->item_id = (int) $item_data->item_id;
+                    $item_ingreso->cantidad = (int) $item->quantity;
                     $new_item_ingreso = $item_ingreso->save();
 
                     if ($new_item_ingreso) {
@@ -62,11 +71,16 @@ class IngresoController extends Controller
                         $item_to_update->update(['stock' => $stock]);
                     }
                 }
-                return response()->json(['success' => true, 'message' => 'Error al registrar ingreso.']);
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Error al registrar ingreso.',
+                ]);
             } else {
-                return response()->json(['success' => false, 'message' => 'Error al registrar ingreso.']);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error al registrar ingreso.',
+                ]);
             }
-
 
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
@@ -84,8 +98,18 @@ class IngresoController extends Controller
     {
         //
         $ingreso = Ingreso::select('*')
-            ->join('responsable', 'ingreso.responsable_id', '=', 'responsable.responsable_id')
-            ->join('ubicacion', 'ingreso.ubicacion_id', '=', 'responsable.ubicacion_id')
+            ->join(
+                'responsable',
+                'ingreso.responsable_id',
+                '=',
+                'responsable.responsable_id'
+            )
+            ->join(
+                'ubicacion',
+                'ingreso.ubicacion_id',
+                '=',
+                'responsable.ubicacion_id'
+            )
             ->where('id', $id)
             ->first();
 
@@ -105,12 +129,21 @@ class IngresoController extends Controller
      */
     public function download(Request $request)
     {
-
         $id = $request->id;
 
         $ingreso = Ingreso::select('*')
-            ->join('responsable', 'ingreso.responsable_id', '=', 'responsable.responsable_id')
-            ->join('ubicacion', 'ingreso.ubicacion_id', '=', 'responsable.ubicacion_id')
+            ->join(
+                'responsable',
+                'ingreso.responsable_id',
+                '=',
+                'responsable.responsable_id'
+            )
+            ->join(
+                'ubicacion',
+                'ingreso.ubicacion_id',
+                '=',
+                'responsable.ubicacion_id'
+            )
             ->where('id', $id)
             ->first();
 
@@ -119,7 +152,14 @@ class IngresoController extends Controller
             ->where('ingreso_id', $id)
             ->get();
 
-        $pdf = PDF::loadView('template.pdf_ingresos', compact('ingreso', 'items'));
+        $logo = Logo::where('images_baja', 0)->first();
+
+        // return $logo;
+
+        $pdf = PDF::loadView(
+            'template.pdf_ingresos',
+            compact('ingreso', 'items', 'logo')
+        );
         $pdf_name = 'ingreso_' . $id . '_fecha_' . $ingreso->fecha . '.pdf';
 
         return $pdf->download($pdf_name);

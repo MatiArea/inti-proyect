@@ -33,8 +33,6 @@
                     </span>
                 </div>
 
-
-
                 <div class="form-group col-3 p-1">
                     <span class="p-2">
                         Ubicacion

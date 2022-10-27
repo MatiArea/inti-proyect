@@ -60,14 +60,20 @@
                     items: JSON.stringify(itemsDelete)
                 }
 
+                console.log($('#nombreApellidoDelete').val())
+
                 $.ajax({
                     url: action,
                     data: {
                         _token: $('input[name=_token]').val(),
                         fecha: $('#fechaDelete').val(),
+                        nombre_receptor: $('#nombreApellidoDelete').val(),
                         ubicacion_id: parseInt($('#ubicacionDelete').val()),
                         responsable_id: $('#responsableDelete').val() ? parseInt($(
                                 '#responsableDelete')
+                            .val()) : null,
+                        area_receptor_id: $('#areaDelete').val() ? parseInt($(
+                                '#areaDelete')
                             .val()) : null,
                         items: JSON.stringify(itemsDelete)
                     },
@@ -215,32 +221,13 @@
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal1">Cargar nuevo Item <span
                     data-feather="plus"></span></button>
             <div class="d-flex justify-content-between align-items-center">
-                <button type="button" class="btn btn-primary rounded-pill mx-4" data-toggle="modal"
+                <button type="button" class="btn btn-success rounded-pill mx-4" data-toggle="modal"
                     data-target="#modal2">Agregar stock </span></button>
-                <button type="button" class="btn btn-primary rounded-pill mx-4" data-toggle="modal"
+                <button type="button" class="btn btn-danger rounded-pill mx-4" data-toggle="modal"
                     data-target="#modal3">Entregar stock </span></button>
+                <a class="btn btn-info rounded-pill mx-4" href="/item/export">Exportar Excel</a>
             </div>
         </div>
-        {{-- <div
-            class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom col-12">
-            <div class="form-group col-4 p-2">
-                <div class="form-group">
-                    <select class="form-control" id="selectEstadoOblea" placeholcer="Estado oblea">
-                        <option>Filtrar</option>
-                        <option>Filtro 1</option>
-                        <option>Filtro 2</option>
-                        <option>Filtro 3</option>
-                        <option>Filtro 4</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group col-4 p-2">
-                <div class="form-group p-2">
-                    <input type="text" class="form-control" id="nempresa" placeholder="Valor a filtrar">
-                </div>
-            </div>
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </div> --}}
 
         <!-- Modal 1 -->
         <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="modal1Title"
@@ -256,7 +243,7 @@
                         <form action="/item/store" method="POST">
                             @csrf
                             <!-- Section 1 -->
-                            <h6 class="modal-title" id="modal1Title">Informacion centro de costo</h6>
+                            <h6 class="modal-title" id="modal1Title">Item</h6>
                             <div class="d-flex flex-row  justify-content-between flex-wrap flex-md-nowrap pt-2">
 
                                 <div class="form-group col-6 p-2">
@@ -281,6 +268,7 @@
                                     <textarea class="form-control" name="descripcion" rows="3" placeholder="Descripcion del articulo"></textarea>
                                 </div>
                             </div>
+                            <h6 class="modal-title" id="modal1Title">Ubicación</h6>
                             <div class="d-flex flex-row  justify-content-between flex-wrap flex-md-nowrap pt-2">
                                 <div class="form-group col-6 p-2">
                                     <div class="form-group col-12">
@@ -299,7 +287,7 @@
                                         <select class="form-control" name="responsable" placeholcer="Responsable">
                                             <option value="0" disabled selected>Responsable</option>
                                             @foreach ($responsables as $responsable)
-                                                <option value="{{ $responsable->id }}">
+                                                <option value="{{ $responsable->responsable_id }}">
                                                     {{ $responsable->nombreApellido }}
                                                 </option>
                                             @endforeach
@@ -316,12 +304,12 @@
                             <div class="d-flex flex-row  justify-content-between flex-wrap flex-md-nowrap ">
                                 <div class="form-group col-6 p-2">
                                     <input type="number" class="form-control" name="stockInicial"
-                                        placeholder="Stock inicial">
+                                        placeholder="Stock inicial" min="0">
                                 </div>
 
                                 <div class="form-group col-6 p-2">
-                                    <input type="number" class="form-control" name="stockMinimo"
-                                        placeholder="Stock minimo">
+                                    <input type="number" class="form-control" name="stockMinimo" placeholder="Stock minimo"
+                                        min="0">
                                 </div>
                             </div>
 
@@ -370,12 +358,12 @@
                         <form method="POST" action="/stock/store" id="addStockForm">
                             @csrf
                             <!-- Section 1 -->
-                            <h6 class="modal-title" id="modal2Title">Informacion centro de costo</h6>
 
                             <div class="form-group col-6 p-2">
                                 <input type="datetime-local" class="form-control" name="fecha" id="fecha"
                                     placeholder="Cantidad">
                             </div>
+                            <h6 class="modal-title" id="modal2Title">Ubicacación</h6>
                             <div class="d-flex flex-row  justify-content-between flex-wrap flex-md-nowrap pt-2">
 
                                 <div class="form-group col-6 p-2">
@@ -406,6 +394,8 @@
                                 </div>
 
                             </div>
+                            <h6 class="modal-title" id="modal2Title">Items</h6>
+
                             <div class="d-flex flex-row  justify-content-between flex-wrap flex-md-nowrap pt-2">
 
                                 <div class="form-group col-8 p-2">
@@ -486,13 +476,12 @@
                         <form method="POST" action="/stock/delete" id="deleteStockForm">
                             @csrf
                             <!-- Section 1 -->
-                            <h6 class="modal-title" id="modal2Title">Informacion centro de costo</h6>
 
                             <div class="form-group col-6 p-2">
                                 <input type="datetime-local" class="form-control" name="fechaDelete" id="fechaDelete">
                             </div>
+                            <h6 class="modal-title" id="modal2Title">Ubicación</h6>
                             <div class="d-flex flex-row  justify-content-between flex-wrap flex-md-nowrap pt-2">
-
                                 <div class="form-group col-6 p-2">
                                     <div class="form-group">
                                         <select class="form-control" name="ubicacionDelete" id="ubicacionDelete"
@@ -521,6 +510,27 @@
                                 </div>
 
                             </div>
+                            <h6 class="modal-title" id="modal2Title">Detalle Entrega</h6>
+                            <div class="d-flex flex-row  justify-content-between flex-wrap flex-md-nowrap pt-2">
+
+                                <div class="form-group col-6 p-2">
+                                    <input type="text" class="form-control" id="nombreApellidoDelete"
+                                        name="nombreApellidoDelete" placeholder="Nombre y Apellido">
+                                </div>
+                                <div class="form-group col-6 p-2">
+                                    <select class="form-control" name="areaDelete" id="areaDelete" placeholcer="Área">
+                                        <option value="0" disabled selected>Área</option>
+                                        @foreach ($areas as $area)
+                                            <option value="{{ $area->area_id }}">
+                                                {{ $area->nombre }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                            </div>
+                            <h6 class="modal-title" id="modal2Title">Items</h6>
+
                             <div class="d-flex flex-row  justify-content-between flex-wrap flex-md-nowrap pt-2">
 
                                 <div class="form-group col-8 p-2">
@@ -599,6 +609,17 @@
                         <th scope="col">Ubicacion</th>
                         <th scope="col">Stock</th>
                         <th scope="col">Inventariable</th>
+                        {{-- <th scope="col">
+                            <div class="btn-group">
+                                <button class="btn btn-sm " type="button" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
+                                    <i class="btn btn-sm fa-solid fa-ellipsis-vertical" data-toggle="dropdown"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="/item/export">Exportar Excel (.xlsx)</a>
+                                </div>
+                            </div>
+                        </th> --}}
                     </tr>
                 </thead>
                 <tbody>
