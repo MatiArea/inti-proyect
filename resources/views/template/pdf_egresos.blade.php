@@ -75,7 +75,7 @@
 
     <div class="radiocir">
         <div>
-            <img src="{{ asset('storage/app/' . $logo->path) }}" style="width:175px;height:100px;margin-left: 250px">
+            <img src="{{ asset('app/' . $logo->path) }}" style="width:175px;height:100px;margin-left: 250px">
         </div>
         <div style="margin-top: 15px">
 
@@ -93,7 +93,7 @@
         <div style="font-size:18px">
 
             <span class="p-2">
-                Ubicacion: {{ $egreso->nombre_ubicacion }}
+                Ubicacion: {{ $egreso->ubicacion->nombre_ubicacion }}
 
             </span>
 
@@ -101,15 +101,13 @@
         <div style="font-size:18px">
 
             <span class="p-2">
-                Responsable: {{ $egreso->nombreApellido }}
+                Responsable: {{ $egreso->responsable->nombreApellido }}
             </span>
 
         </div>
     </div>
     <div>
         <table cellpadding="0" cellspacing="0">
-
-
 
             <tr class="heading">
                 <td>
@@ -126,19 +124,16 @@
             @foreach ($items as $item)
                 <tr class="item">
                     <td>
-                        {{ $item->id }}
+                        {{ $item->item->id }}
                     </td>
                     <td>
-                        {{ $item->descripcion }}
+                        {{ $item->item->descripcion }}
                     </td>
                     <td style="text-align: center">
                         {{ $item->cantidad }}
                     </td>
                 </tr>
             @endforeach
-
-
-
 
         </table>
 

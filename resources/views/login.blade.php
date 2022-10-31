@@ -9,10 +9,8 @@
     <meta name="generator" content="Hugo 0.88.1">
 
     <!-- Bootstrap core CSS -->
-    <link href="/public/assets/dist/css/bootstrap.min.css" rel="stylesheet" />
-
-
-
+    <link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="icon" href="/assets/brand/mini-logo.png">
 
     <style>
         .bd-placeholder-img {
@@ -91,13 +89,13 @@
 
     <form class="form-signin" action="/login" method="POST">
         @csrf
-        <img class="mb-4" src="/public/assets/brand/INTI_Logo.png" alt="" width="240" height="120">
+        <img class="mb-4" src="/assets/brand/INTI_Logo.png" alt="" width="300" height="175">
         <input type="user" id="inputEmail" name="username" class="form-control my-2" placeholder="Usuario" required
             autofocus>
         <input type="password" id="inputPassword" name="password" class="form-control my-2" placeholder="Contraseña"
             required>
 
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <button class="btn btn-lg btn-primary btn-block my-3 w-100" type="submit">Iniciar Sesión</button>
     </form>
 
 

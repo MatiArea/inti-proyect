@@ -33,7 +33,7 @@
                         if (response.success) {
                             items = [];
                             $('#addStockForm')[0].reset();
-                            window.location.href = "/";
+                            window.location.href = "/inicio";
                         } else {
                             alert(response.message);
                         }
@@ -60,8 +60,6 @@
                     items: JSON.stringify(itemsDelete)
                 }
 
-                console.log($('#nombreApellidoDelete').val())
-
                 $.ajax({
                     url: action,
                     data: {
@@ -72,8 +70,7 @@
                         responsable_id: $('#responsableDelete').val() ? parseInt($(
                                 '#responsableDelete')
                             .val()) : null,
-                        area_receptor_id: $('#areaDelete').val() ? parseInt($(
-                                '#areaDelete')
+                        area_receptor_id: $('#areaDelete').val() ? parseInt($('#areaDelete')
                             .val()) : null,
                         items: JSON.stringify(itemsDelete)
                     },
@@ -86,7 +83,7 @@
                         if (response.success) {
                             itemsDelete = [];
                             $('#deleteStockForm')[0].reset();
-                            window.location.href = "/";
+                            window.location.href = "/inicio";
                         } else {
                             alert(response.message);
                         }
@@ -198,7 +195,7 @@
                 },
                 success: function(response) {
                     if (response.success) {
-                        window.location.href = "/";
+                        window.location.href = "/inicio";
                     } else {
                         alert(response.message);
                     }
@@ -521,7 +518,7 @@
                                     <select class="form-control" name="areaDelete" id="areaDelete" placeholcer="Área">
                                         <option value="0" disabled selected>Área</option>
                                         @foreach ($areas as $area)
-                                            <option value="{{ $area->area_id }}">
+                                            <option value="{{ $area->id }}">
                                                 {{ $area->nombre }}
                                             </option>
                                         @endforeach
@@ -609,17 +606,6 @@
                         <th scope="col">Ubicacion</th>
                         <th scope="col">Stock</th>
                         <th scope="col">Inventariable</th>
-                        {{-- <th scope="col">
-                            <div class="btn-group">
-                                <button class="btn btn-sm " type="button" data-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false">
-                                    <i class="btn btn-sm fa-solid fa-ellipsis-vertical" data-toggle="dropdown"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="/item/export">Exportar Excel (.xlsx)</a>
-                                </div>
-                            </div>
-                        </th> --}}
                     </tr>
                 </thead>
                 <tbody>
@@ -636,71 +622,14 @@
                                 <td>No</td>
                             @endif
                             <td>
-                                {{-- <i class="fa-solid fa-eye px-2"></i> --}}
-                                {{-- <i class="fa-solid fa-pencil px-2"></i> --}}
-                                {{-- <i class="fa-solid fa-trash px-2">
-
-                                </i> --}}
                                 <a class=" rounded" onclick="deleteItem({{ $item->item_id }})"><i
                                         class="fa-solid fa-trash px-2"></i></a>
                             </td>
                         </tr>
                     @endforeach
-                    {{-- <tr class="py-2">
-                    <td>003C000107</td>
-                    <td>Electricidad</td>
-
-                    <td>Tapas punto y toma</td>
-                    <td>Pañol Edif.Nº 31 INTI PTM</td>
-                    <td>20 </td>
-                    <td>
-                        <i class="fa-solid fa-eye px-2"></i>
-                        <i class="fa-solid fa-pencil px-2"></i>
-                        <i class="fa-solid fa-trash px-2"></i>
-                    </td>
-                </tr>
-                <tr class="py-2">
-                    <td>003C000107</td>
-                    <td>Electricidad</td>
-
-                    <td>Protectores Oculares</td>
-                    <td>Pañol Edif.Nº 31 INTI PTM</td>
-                    <td>20</td>
-                    <td>
-                        <a href="/item/1">
-                            <i class="fa-solid fa-eye px-2"></i>
-                        </a>
-                        <i class="fa-solid fa-pencil px-2"></i>
-                        <i class="fa-solid fa-trash px-2"></i>
-                    </td>
-                </tr>
-                <tr class="py-2">
-                    <td>003C000107</td>
-                    <td>Electricidad</td>
-                    <td>Cascos Blancos</td>
-                    <td>Pañol Edif.Nº 31 INTI PTM</td>
-                    <td>20</td>
-                    <td>
-                        <i class="fa-solid fa-eye px-2"></i>
-                        <i class="fa-solid fa-pencil px-2"></i>
-                        <i class="fa-solid fa-trash px-2"></i>
-                    </td>
-                </tr> --}}
 
                 </tbody>
             </table>
         </div>
-        {{-- <nav class="mt-4">
-            <ul class="pagination justify-content-center">
-                <li class="page-item active" aria-current="page">
-                    <span class="page-link">
-                        1
-                        <span class="sr-only">(current)</span>
-                    </span>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-            </ul>
-        </nav> --}}
     </main>
 @endsection

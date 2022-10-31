@@ -74,7 +74,7 @@ class ItemController extends Controller
         $item->inventariable = $request->inventariable;
         $item->save();
 
-        return redirect('/');
+        return redirect('/inicio');
     }
 
     /**

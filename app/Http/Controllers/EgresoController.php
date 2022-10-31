@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Area;
 use PDF;
 use Image;
 use App\Models\Item;
@@ -128,33 +129,23 @@ class EgresoController extends Controller
     {
         $id = $request->id;
 
-        $egreso = Egreso::select('*')
-            ->join(
-                'responsable',
-                'egreso.responsable_id',
-                '=',
-                'responsable.responsable_id'
-            )
-            ->join(
-                'ubicacion',
-                'egreso.ubicacion_id',
-                '=',
-                'responsable.ubicacion_id'
-            )
+        $egreso = Egreso::with(['responsable', 'ubicacion', 'area'])
             ->where('id', $id)
             ->first();
 
-        $items = ItemEgreso::select('*')
-            ->join('item', 'item_egreso.item_id', '=', 'item.item_id')
+        $items = ItemEgreso::with(['item'])
             ->where('egreso_id', $id)
             ->get();
 
-        $logo = Logo::where('images_baja', 0)->first();
+        // $logo = Logo::where('images_baja', 0)->first();
 
-        $pdf = PDF::loadView(
-            'template.pdf_egresos',
-            compact('egreso', 'items', 'logo')
-        );
+        $pdf = PDF::loadView('template.pdf_egresos', [
+            'success' => true,
+            'egreso' => $egreso,
+            'items' => $items,
+            // 'logo' => $logo,
+        ]);
+
         $pdf_name = 'egreso_' . $id . '_fecha_' . $egreso->fecha . '.pdf';
 
         return $pdf->download($pdf_name);

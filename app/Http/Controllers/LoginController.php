@@ -46,6 +46,7 @@ class LoginController extends Controller
             ->first();
 
         if ($user) {
+            session(['user' => $user]);
             return redirect('/inicio');
         } else {
             return redirect('/')->with(

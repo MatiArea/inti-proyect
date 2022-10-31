@@ -9,6 +9,7 @@
     <meta name="generator" content="Hugo 0.88.1" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>INTI</title>
+    <link rel="icon" href="/assets/brand/mini-logo.png">
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/dashboard/" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -16,7 +17,7 @@
 
     <!-- Bootstrap core CSS -->
     <!-- <link href="../../assets/dist/css/bootstrap.min.css" rel="stylesheet" /> -->
-    <link href="/public/assets/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/assets/dist/css/bootstrap.min.css" rel="stylesheet" />
 
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
 
@@ -179,7 +180,7 @@
 
         <nav id="sidebar" class="min-vh-100">
             <div style="border-bottom: 3px solid #47748b;">
-                <img src="/public/assets/brand/inti_logo_byn.png" width="250px" height="155px" />
+                <img src="/assets/brand/inti_logo_byn.png" width="250px" height="155px" />
             </div>
             <div class="mt-2">
                 <ul class="components">
@@ -187,7 +188,7 @@
                         <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false"
                             class="dropdown-toggle">Stock</a>
                         <ul class="collapse list-unstyled" id="homeSubmenu">
-                            <li><a href="/" class=" rounded">Inicio</a></li>
+                            <li><a href="/inicio" class=" rounded">Inicio</a></li>
                             <li><a href="/stock/entradas" class=" rounded">Entradas</a></li>
                             <li><a href="/stock/salidas" class=" rounded">Salidas</a></li>
                             <li class="m-2">
@@ -241,11 +242,11 @@
             <!-- Header -->
             <div class="navbar navbar-dark sticky-top bg-light flex-md-nowrap p-0 shadow">
                 <button type="button" id="sidebarCollapse" class="navbar-toggler collapsed mx-2">
-                    <i class="fa-solid fa-bars " style="color: black;"></i>
+                    {{-- <i class="fa-solid fa-bars " style="color: black;"></i> --}}
                 </button>
                 <div class="navbar-nav d-flex flex-row aling-items-center">
                     <a href="/">
-                        <img src="/public/assets/brand/logo.png" />
+                        <img src="/assets/brand/logo.png" />
                     </a>
                 </div>
 
@@ -259,14 +260,14 @@
         </div>
     </div>
 
-    <script src="/public/assets/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
         integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous">
     </script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
         integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous">
     </script> -->
-    <script src="/public/js/dashboard.js"></script>
+    <script src="/js/dashboard.js"></script>
     <script src="https://kit.fontawesome.com/70dab0e261.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">

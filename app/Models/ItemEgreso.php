@@ -18,11 +18,20 @@ class ItemEgreso extends Model
      * @var string
      */
     protected $table = 'item_egreso';
-	public $timestamps = false;
-
+    public $timestamps = false;
 
     /**
      * @var array
      */
     protected $fillable = ['item_id', 'egreso_id', 'cantidad'];
+
+    public function item()
+    {
+        return $this->belongsTo('App\Models\Item', 'item_id');
+    }
+
+    public function egreso()
+    {
+        return $this->belongsTo('App\Models\Egreso', 'egreso_id');
+    }
 }

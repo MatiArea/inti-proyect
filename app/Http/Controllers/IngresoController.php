@@ -158,7 +158,7 @@ class IngresoController extends Controller
 
         $pdf = PDF::loadView(
             'template.pdf_ingresos',
-            compact('ingreso', 'items', 'logo')
+            compact('ingreso', 'items')
         );
         $pdf_name = 'ingreso_' . $id . '_fecha_' . $ingreso->fecha . '.pdf';
 

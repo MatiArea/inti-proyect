@@ -29,4 +29,19 @@ class Egreso extends Model
         'ubicacion_id',
         'area_receptor_id',
     ];
+
+    public function responsable()
+    {
+        return $this->belongsTo('App\Models\Responsable', 'responsable_id');
+    }
+
+    public function ubicacion()
+    {
+        return $this->belongsTo('App\Models\Ubicacion', 'ubicacion_id');
+    }
+
+    public function area()
+    {
+        return $this->belongsTo('App\Models\Area', 'area_receptor_id');
+    }
 }
